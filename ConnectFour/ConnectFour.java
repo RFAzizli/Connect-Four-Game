@@ -4,9 +4,38 @@ import java.util.Scanner;
 
 public class ConnectFour {
     public void start(){
-        printInstructions();
+        printInstructionsPVP();
     }
-    public void printInstructions(){
+    public void startAI(){
+        printInstructionsPVE();
+    }
+    private void printInstructionsPVE(){
+        System.out.println("Welcome to Connect Four");
+        System.out.println("Just in case if you don't know the rules, there are two checkers 'X' and 'O', you will be assigned one of them ");
+        System.out.println("Your goal is to connect four of your checkers, diagonally, vertically or horizontally.");
+        System.out.println("The first person to connect four checkers win, so try to not let your opponent connect his checkers");
+        System.out.println("This is player vs AI mode, so you will be assigned 'X' checker automatically");
+        System.out.println("There are ");
+        System.out.println("1) Very easy.");
+        System.out.println("2) Easy");
+        System.out.println("3) Normal ");
+        System.out.println("4) Almost Hard");
+        System.out.println("5) Hard");
+        Scanner s=new Scanner(System.in);
+        System.out.println("Just type in the number of the difficulty, the ones I kept on the left.");
+        System.out.println("Difficulty: ");
+        int diff=s.nextInt();
+        while(diff>5){
+            System.out.println("You can't go higher, I am sorry, choose another number, from 1 to 5.");
+            System.out.println("Difficulty: ");
+            diff=s.nextInt();
+        }
+        // There are 3 tiebreaks: left right and random, but since random seems to be more 'human-like' I will use it here
+        Player p1=new Player("X");
+        AIPlayer ai=new AIPlayer("O","RANDOM",diff-1);
+        BoardSize(p1, ai);
+    }
+    private void printInstructionsPVP(){
         System.out.println("Welcome to Connect Four");
         System.out.println("Just in case if you don't know the rules, there are two checkers 'X' and 'O', you will be assigned one of them ");
         System.out.println("Your goal is to connect four of your checkers, diagonally, vertically or horizontally.");
@@ -19,6 +48,11 @@ public class ConnectFour {
         System.out.println("Players have been assigned their checkers");
         System.out.println("P1 : "+p2.opponentChecker());
         System.out.println("P2 : "+p1.opponentChecker());
+        BoardSize( p1, p2);
+    }
+
+    private void BoardSize(Player p1, Player p2) {
+        Scanner s=new Scanner(System.in);
         System.out.println("Now, enter the size of the board");
         System.out.println("You can skip this, and play on default board size, 7x6");
         System.out.println("Do you want to skip this step, just type in yes if you want so, otherwise you will have to set the size.");
@@ -30,6 +64,7 @@ public class ConnectFour {
         Board b=new Board(size[0],size[1]);
         startGame(b,p1,p2);
     }
+
     private int[] getSize(){
         Scanner s=new Scanner(System.in);
         System.out.println("What height do you want the board to be? It should be larger or equal to 4.");
@@ -65,16 +100,15 @@ public class ConnectFour {
             }
             move++;
             System.out.println(b);
-            System.out.println(b.isWinFor("X"));
         }
         if(b.isWinFor("X")){
-            if(p2.opponentChecker()=="X"){
+            if(p2.opponentChecker().equals("X")){
                 System.out.println("Player 1 won, congratulations!");
             }else {
                 System.out.println("Player 2 won, congratulations!");
             }
         }else if(b.isWinFor("O")){
-            if(p1.opponentChecker()=="X"){
+            if(p1.opponentChecker().equals("X")){
                 System.out.println("Player 1 won, congratulations!");
             }else {
                 System.out.println("Player 2 won, congratulations!");
@@ -96,6 +130,5 @@ public class ConnectFour {
         }
         s.nextLine();
         s.close();
-        return;
     }
 }
