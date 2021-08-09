@@ -21,25 +21,31 @@ public class Board {
             }
         }
     }
-    public boolean remove(String checker,int col){
-        return this.removeChecker(checker,col);
+    public boolean remove(int col){
+        return this.removeChecker(col);
     }
-    private boolean removeChecker(String checker,int col){
-        if ((checker != "O" && checker != "X") || col < 0 || col >= this.width) {
+    private boolean removeChecker(int col){
+        if (col < 0 || col >= this.width) {
             throw new IllegalArgumentException();
         }
         int firstCell=0;
         for (int i = 0;i<this.height;i++) {
-            if(this.slots[i][col]!=" "){
+            if(!this.slots[i][col].equals(" ")){
                 firstCell=i;
                 break;
             }
         }
-        if(this.slots[firstCell][col].equals(checker)){
+        if(this.slots[firstCell][col].equals("X") || this.slots[firstCell][col].equals("O")){
             this.slots[firstCell][col]=" ";
             return true;
         }
         return false;
+    }
+    public int getWidth(){
+        return this.width;
+    }
+    public int getHeight(){
+        return this.height;
     }
     public boolean add(String checker,int col){
         return this.addChecker(checker,col);
@@ -49,13 +55,12 @@ public class Board {
             throw new IllegalArgumentException();
         }
         if (this.canAddTo(col)) {
-            int emptyCell = 0;
             for (int i = 0;i<this.height;i++) {
                 if(i==this.height-1){
                     this.slots[i][col]=checker;
                     return true;
                 }
-                if(this.slots[i+1][col]!=" "){
+                if(!this.slots[i + 1][col].equals(" ")){
                     this.slots[i][col]=checker;
                     return true;
                 }
@@ -67,10 +72,7 @@ public class Board {
         if(col<0 || col>=this.width){
             return false;
         }
-        if(this.slots[0][col]!=" "){
-            return false;
-        }
-        return true;
+        return this.slots[0][col].equals(" ");
     }
     public boolean isWinFor(String checker){
         if (!checker.equals("X") && !checker.equals("O")) {
@@ -80,9 +82,9 @@ public class Board {
         for(int i=0;i<this.height;i++){
             for(int j=0;j<this.width-3;j++){
                 if(
-                        this.slots[i][j]==this.slots[i][j+1] &&
-                        this.slots[i][j+1]==this.slots[i][j+2] &&
-                        this.slots[i][j+2]==this.slots[i][j+3] &&
+                        this.slots[i][j].equals(this.slots[i][j + 1]) &&
+                                this.slots[i][j + 1].equals(this.slots[i][j + 2]) &&
+                                this.slots[i][j + 2].equals(this.slots[i][j + 3]) &&
                         this.slots[i][j+3].equals(checker)
                 ){
                     return true;
@@ -93,9 +95,9 @@ public class Board {
         for(int i=0;i<this.height-3;i++) {
             for (int j = 0; j < this.width; j++) {
                 if (
-                        this.slots[i][j] == this.slots[i + 1][j] &&
-                        this.slots[i + 1][j] == this.slots[i + 2][j] &&
-                        this.slots[i + 2][j] == this.slots[i + 3][j] &&
+                        this.slots[i][j].equals(this.slots[i + 1][j]) &&
+                                this.slots[i + 1][j].equals(this.slots[i + 2][j]) &&
+                                this.slots[i + 2][j].equals(this.slots[i + 3][j]) &&
                         this.slots[i + 3][j] .equals(checker)
                 ) {
                     return true;
@@ -106,9 +108,9 @@ public class Board {
         for(int i=0;i<this.height-3;i++){
             for(int j=0;j<this.width-3;j++){
                 if(
-                        this.slots[i][j]==this.slots[i+1][j+1] &&
-                        this.slots[i+1][j+1]==this.slots[i+2][j+2] &&
-                        this.slots[i+2][j+2]==this.slots[i+3][j+3] &&
+                        this.slots[i][j].equals(this.slots[i + 1][j + 1]) &&
+                                this.slots[i + 1][j + 1].equals(this.slots[i + 2][j + 2]) &&
+                                this.slots[i + 2][j + 2].equals(this.slots[i + 3][j + 3]) &&
                         this.slots[i+3][j+3].equals(checker)
                 ){
                     return true;
@@ -119,9 +121,9 @@ public class Board {
         for(int i=0;i<this.height-3;i++){
             for(int j=3;j<this.width;j++){
                 if(
-                        this.slots[i][j]==this.slots[i+1][j-1] &&
-                                this.slots[i+1][j-1]==this.slots[i+2][j-2] &&
-                                this.slots[i+2][j-2]==this.slots[i+3][j-3] &&
+                        this.slots[i][j].equals(this.slots[i + 1][j - 1]) &&
+                                this.slots[i + 1][j - 1].equals(this.slots[i + 2][j - 2]) &&
+                                this.slots[i + 2][j - 2].equals(this.slots[i + 3][j - 3]) &&
                                 this.slots[i+3][j-3].equals(checker)
                 ){
                     return true;
@@ -133,7 +135,7 @@ public class Board {
     public boolean isFull(){
         for(String[] arr: this.slots){
             for(String str:arr){
-                if(str==" "){
+                if(str.equals(" ")){
                     return false;
                 }
             }
