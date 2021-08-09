@@ -3,8 +3,8 @@ package ConnectFour;
 import java.util.Scanner;
 
 public class Player {
-    String checker;
-    int numberOfMoves;
+    protected String checker;
+    protected int numberOfMoves;
     public Player(String givenChecker){
         if(!givenChecker.equalsIgnoreCase("X") && !givenChecker.equalsIgnoreCase("O")){
             throw new  IllegalArgumentException();
@@ -33,6 +33,7 @@ public class Player {
             System.out.println("Can't put the checker in the given column, try again");
             System.out.println("Column: ");
             col=s.nextInt();
+            canAdd=b.canAddTo(col);
         }
         b.add(this.checker,col);
     }
